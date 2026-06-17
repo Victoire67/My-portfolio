@@ -3,7 +3,7 @@ import gmail from "../assets/socials/mailogo.png";
 import linkedIn from "../assets/socials/linkedinlogo.png"
 import x from "../assets/socials/xlogo.png"
 function Contacts() {
-    return <div className="flex  mx-auto gap-8 h-screen bg-teal-900 items-center w-full place-content-center">
+    return <div className="flex  mx-auto gap-8 h-screen bg-teal-900 items-center w-full place-content-center transform tansition-all " id="contact-me">
         <a href="ansimavicky@gmail.com">
             <img src={gmail} alt="gmail" className="sm:h-32 h-16" />
         </a>

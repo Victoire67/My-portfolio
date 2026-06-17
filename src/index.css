@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 body {
-  background : whitesmoke;
+  background: whitesmoke;
   background-repeat: no-repeat;
   background-size: cover;
-  color : white;
-
+  color: white;
+}
+html {
+  scroll-behavior: smooth;
 }
