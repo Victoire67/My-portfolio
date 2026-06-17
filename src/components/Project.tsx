@@ -1,6 +1,6 @@
 import Button from "./Button"
 function ProjectCard({ img, description, title, }: { img: Image | any, description: string, title: string }) {
-    return <div className="flex gap-8 my-8 w-fit ">
+    return <div className="sm:flex grid  gap-8 my-8 w-fit hover:bg-gray-200">
         <img src={img} alt={description} />
         <div>
             <h1 className="text-4xl font-bold">{title}</h1>

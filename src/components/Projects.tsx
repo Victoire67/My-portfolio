@@ -5,7 +5,7 @@ function Projects() {
     const ProjectElement = data.map(project => {
         return <ProjectCard img={project.img} title={project.title} description={project.description} />
     })
-    return <div className="grid grid-cols-2 grid-rows-2 place-items-center">
+    return <div className="grid sm:grid-cols-2 sm:grid-rows-2 place-items-center px-[20px]">
         {...ProjectElement}
     </div>
 }

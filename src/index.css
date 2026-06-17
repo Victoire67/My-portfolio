@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 body {
-  background: url("./assets/bg.jpg");
+  background : whitesmoke;
   background-repeat: no-repeat;
   background-size: cover;
   color : white;
-  padding: 20px;
+
 }

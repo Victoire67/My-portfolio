@@ -9,10 +9,16 @@ function App(): ReactElement {
   return <div className="grid gap-84 ">
     <Header />
     <LandingTxt />
-    <About />
-    <Projects />
-    <Contacts />
-    <Footer />
+    <div className="grid gap-84 text-black">
+
+      <About />
+      <Projects />
+
+    </div>
+    <div className="grid">
+      <Contacts />
+      <Footer />
+    </div>
   </div>
 }
 
