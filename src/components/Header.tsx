@@ -6,7 +6,6 @@ function Header() {
                 <a href="#Home">      <li className="cursor-pointer hover:text-amber-200">Home</li></a>
                 <a href="#about">   <li className="cursor-pointer hover:text-amber-200">About</li></a>
                 <a href="#projects">                <li className="cursor-pointer hover:text-amber-200">Projects</li></a>
-                <a href="#contact-me">           <li className="cursor-pointer hover:text-amber-200">Contacts</li></a>
             </ul>
         </nav>
 
