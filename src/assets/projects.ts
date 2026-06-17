@@ -1,7 +1,7 @@
 import liverPool from "../assets/projects/liverpool.png"
 import ludo from "../assets/projects/ludo.png"
-import moniShare from "../assets/projects/moniShare.png"
-import uniFlow from "../assets/projects/uniFlow.png"
+import moniShare from "../assets/projects/monishare.png"
+import uniFlow from "../assets/projects/uniflow.png"
 export  const data = [
     {
         img : liverPool, 
