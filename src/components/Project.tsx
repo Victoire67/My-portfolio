@@ -1,5 +1,10 @@
-import Button from "./Button"
-function ProjectCard({ img, description, title, }: { img: Image | any, description: string, title: string }) {
+interface ProjectCardProps {
+  img: string;
+  description: string;
+  title: string;
+}
+
+function ProjectCard({ img, description, title }: ProjectCardProps) {
     return <div className="sm:flex grid  gap-8 my-8 w-fit hover:bg-gray-200">
         <img src={img} alt={description} />
         <div>
