@@ -6,9 +6,9 @@ import mongoDbImg from "../assets/languages/mongoDb.png"
 import typeScriptImg from "../assets/languages/typescript.png"
 import javaScriptImg from "../assets/languages/Javascript 1.png"
 import nodeImg from "../assets/languages/node.png"
-import gitImg from "../assets/languages/gitff.png"
+import gitImg from "../assets/languages/git.png"
 function LanguageGrid() {
-    return <div className="grid grid-cols-1 items-center place-content-center py-32 sm:py-1">
+    return <div className="grid grid-cols-1 items-center place-content-center py-32 sm:py-1 scale-70 z-5">
         <div className=" flex items-center sm:place-content-between place-content-center gap-4 ">
             <img src={dockerImg} alt="" className="h-16 aspect-square object-cover" />
             <img src={htmlImg} alt="" className="h-16 aspect-square object-cover" />
@@ -21,9 +21,9 @@ function LanguageGrid() {
         </div>
 
         <div className=" flex items-center sm:place-content-between place-content-center">
-            <img src={javaScriptImg} alt="" className="h-16 aspect-square object-cover" />
-            <img src={nodeImg} alt="" className="h-16 aspect-square object-cover" />
-            <img src={gitImg} alt="" className="h-16 aspect-square object-cover" />
+            <img src={javaScriptImg} alt="javaScript logo" className="h-16 aspect-square object-cover" />
+            <img src={nodeImg} alt="node.js logo" className="h-32 aspect-square object-cover " />
+            <img src={gitImg} alt="git logo" className="h-16 aspect-square object-cover" />
         </div>
     </div>
 }

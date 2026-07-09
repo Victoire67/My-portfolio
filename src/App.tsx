@@ -6,7 +6,8 @@ import Projects from "./components/Projects";
 import Contacts from "./components/Contacts";
 import Footer from "./components/Footer";
 function App(): ReactElement {
-  return <div className="grid gap-84 ">
+  return <div className="grid gap-84 relative">
+  
     <Header />
     <LandingTxt />
     <div className="grid gap-84 text-black">
@@ -19,6 +20,7 @@ function App(): ReactElement {
       <Contacts />
       <Footer />
     </div>
+
   </div>
 }
 
