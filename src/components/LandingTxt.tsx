@@ -1,13 +1,25 @@
 import Button from "./Button";
+import {motion} from "framer-motion"
 function LandingTxt() {
     return <div className="grid  z-4 text-center items-center p-auto place-content-center bg-teal-900 h-screen overflow-clip" id="home">
-        <div className="h-100 w-100 bg-amber-200 absolute transform rotate-70 -top-35 z-5 "></div>
-        <h1 className="sm:text-[64px] text-[32px] z-50">Hello👋 ,  I am <span className="font-bold italic">Victoire Ansima <br className="hidden sm:block" /></span> I am a software engineer </h1>
+        <div className="h-100 w-100 bg-amber-200 absolute transform rotate-70 -top-35 -z-5 "></div>
 
-        <div className="mx-auto">
-            <Button txt="View More" href="4" />
-        </div>
-        <div className="h-100 w-100 bg-amber-200 absolute transform rotate-70 top-45 z-5 left-[80%] "></div>
+
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+
+            <h1 className="sm:text-[64px] text-[32px] z-50">Hello👋 ,  I am <span className="font-bold italic">Victoire Ansima <br className="hidden sm:block" /></span> I am a software engineer </h1>
+
+            <div className="mx-auto">
+                <Button txt="View More" href="4" />
+            </div>
+
+        </motion.div>
+        <div className="h-100 w-100 bg-amber-200 absolute transform rotate-70 top-45 -z-5 left-[80%] "></div>
     </div>
 }
 
