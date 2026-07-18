@@ -14,7 +14,7 @@ function App(): ReactElement {
 
     <div className="grid gap-84 text-black">
 
-        <About />
+      <About />
 
       <Projects />
 
