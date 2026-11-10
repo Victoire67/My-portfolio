@@ -1,19 +1,20 @@
-import { motion } from "framer-motion";
-
 function Footer() {
     return (
-        <footer className="relative border-t border-white/10 px-5 py-8 text-center text-sm text-teal-100/60">
-            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-amber-200/50 to-transparent" />
-            <p>
-                Done in &copy; {new Date().getFullYear()}, by Victor with{" "}
-                <motion.span
-                    className="inline-block"
-                    animate={{ scale: [1, 1.25, 1, 1.25, 1] }}
-                    transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 0.6 }}
-                >
-                    💖
-                </motion.span>
-            </p>
+        <footer className="border-t border-line bg-panel px-5 py-6 font-mono text-xs text-muted">
+            <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
+                <p>
+                    <span className="text-dim"># </span>&copy; {new Date().getFullYear()} Victoire Ansima · built with React, coffee &amp;{" "}
+                    <span className="text-py-yellow">🐍</span>
+                </p>
+                <p className="flex items-center gap-4">
+                    <span>
+                        <span className="text-py-blue">●</span> Python 3
+                    </span>
+                    <span>UTF-8</span>
+                    <span>LF</span>
+                    <span className="text-syn-ok">✓ all tests passing</span>
+                </p>
+            </div>
         </footer>
     );
 }
