@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import Reveal, { SectionHeading } from "./Reveal";
+import Reveal, { SectionHeading, WindowBar } from "./Reveal";
 
 const experience = [
     {
+        hash: "a1c3f9e",
         company: "AmaliTech",
         role: "Python Developer · AI / Machine Learning",
         period: "Present",
@@ -12,6 +13,7 @@ const experience = [
         tags: ["Python", "Machine Learning", "AI", "Data"],
     },
     {
+        hash: "7b02d4c",
         company: "The Gym",
         role: "Full-Stack Development Training",
         period: "Completed",
@@ -24,72 +26,76 @@ const experience = [
 
 function Experience() {
     return (
-        <section id="experience" className="relative overflow-hidden px-5 py-28">
-            <div aria-hidden="true" className="pointer-events-none absolute top-1/4 left-1/2 h-96 w-96 -translate-x-1/2 animate-blob rounded-full bg-teal-400/10 blur-3xl" />
+        <section id="experience" className="bg-dots relative border-t border-line px-5 py-28">
+            <SectionHeading index="02" file="experience.py" title="Experience" />
 
-            <SectionHeading eyebrow="Where I work" title="Experience" />
+            <Reveal className="mx-auto max-w-4xl">
+                <div className="overflow-hidden rounded-xl border border-line bg-panel">
+                    <WindowBar title="git log --graph --decorate career" right="branch: main" />
 
-            <div className="relative mx-auto max-w-3xl">
-                {/* Timeline line that draws itself downward */}
-                <motion.div
-                    aria-hidden="true"
-                    initial={{ scaleY: 0 }}
-                    whileInView={{ scaleY: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: "easeOut" }}
-                    className="absolute top-2 bottom-2 left-3 w-0.5 origin-top bg-linear-to-b from-amber-200 via-teal-300 to-transparent sm:left-4"
-                />
+                    <ul className="relative p-5 sm:p-8">
+                        {/* Branch line that draws itself downward */}
+                        <motion.span
+                            aria-hidden="true"
+                            initial={{ scaleY: 0 }}
+                            whileInView={{ scaleY: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="absolute top-10 bottom-10 left-[29px] w-0.5 origin-top bg-py-blue sm:left-[41px]"
+                        />
 
-                <ul className="grid gap-10">
-                    {experience.map((job, i) => (
-                        <li key={job.company} className="relative pl-12 sm:pl-16">
-                            {/* Timeline marker, pinging while this is the current role */}
-                            <span className="absolute top-7 left-0 flex h-7 w-7 items-center justify-center sm:left-1">
-                                {job.current && <span className="absolute h-full w-full animate-ping rounded-full bg-amber-200/60" />}
-                                <span className={`relative h-4 w-4 rounded-full border-2 border-[#031a19] ${job.current ? "bg-amber-200 shadow-[0_0_16px_rgba(253,230,138,0.8)]" : "bg-teal-300 shadow-[0_0_12px_rgba(94,234,212,0.6)]"}`} />
-                            </span>
-
-                            <Reveal delay={0.2 + i * 0.15}>
-                                <motion.article
-                                    whileHover={{ y: -6 }}
-                                    className="group rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur transition-[border-color,box-shadow] duration-300 hover:border-amber-200/40 hover:shadow-[0_20px_60px_-15px_rgba(45,212,191,0.4)] sm:p-8"
+                        {experience.map((job, i) => (
+                            <li key={job.company} className="relative pb-10 pl-10 last:pb-0 sm:pl-14">
+                                {/* Commit node */}
+                                <span
+                                    aria-hidden="true"
+                                    className={`absolute top-1 left-0 grid h-5 w-5 place-content-center rounded-full border-2 ${job.current ? "border-py-yellow bg-ink" : "border-py-blue bg-ink"}`}
                                 >
-                                    <div className="flex flex-wrap items-center justify-between gap-3">
-                                        <h3 className="font-display text-3xl font-bold text-white transition-colors group-hover:text-amber-200">
-                                            {job.company}
-                                        </h3>
-                                        <span
-                                            className={`rounded-full px-3 py-1 text-sm font-medium ${job.current ? "bg-amber-200 text-teal-950" : "border border-white/15 text-teal-100/70"}`}
-                                        >
-                                            {job.current ? "● Current" : job.period}
-                                        </span>
-                                    </div>
-                                    <p className="mt-2 font-display text-lg font-medium text-teal-300">{job.role}</p>
-                                    <p className="mt-4 leading-relaxed text-teal-100/80">{job.description}</p>
+                                    <span className={`h-2 w-2 rounded-full ${job.current ? "bg-py-yellow" : "bg-py-blue"}`} />
+                                </span>
 
-                                    <motion.ul
-                                        initial="hidden"
-                                        whileInView="show"
-                                        viewport={{ once: true }}
-                                        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.4 } } }}
-                                        className="mt-6 flex flex-wrap gap-2"
-                                    >
-                                        {job.tags.map((tag) => (
-                                            <motion.li
-                                                key={tag}
-                                                variants={{ hidden: { opacity: 0, scale: 0.6 }, show: { opacity: 1, scale: 1 } }}
-                                                className="rounded-full border border-teal-300/30 bg-teal-300/10 px-3 py-1 text-sm text-teal-100"
+                                <Reveal delay={0.15 + i * 0.15}>
+                                    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm">
+                                        <span className="text-syn-num">commit {job.hash}</span>
+                                        {job.current ? (
+                                            <span className="text-muted">
+                                                (<span className="font-bold text-syn-ok">HEAD -&gt; </span>
+                                                <span className="font-bold text-py-yellow">main</span>)
+                                            </span>
+                                        ) : (
+                                            <span className="text-muted">
+                                                (<span className="text-py-blue">tag: {job.period.toLowerCase()}</span>)
+                                            </span>
+                                        )}
+                                    </p>
+
+                                    <article className="mt-3 rounded-lg border border-line bg-ink p-5 transition-colors duration-300 hover:border-py-blue sm:p-6">
+                                        <div className="flex flex-wrap items-center justify-between gap-3">
+                                            <h3 className="font-display text-2xl font-bold text-fg sm:text-3xl">{job.company}</h3>
+                                            <span
+                                                className={`rounded-md px-2.5 py-1 font-mono text-xs font-bold ${job.current ? "bg-py-yellow text-ink" : "border border-line text-muted"}`}
                                             >
-                                                {tag}
-                                            </motion.li>
-                                        ))}
-                                    </motion.ul>
-                                </motion.article>
-                            </Reveal>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+                                                {job.current ? "● current" : job.period.toLowerCase()}
+                                            </span>
+                                        </div>
+                                        <p className="mt-2 font-mono text-sm text-py-blue">{job.role}</p>
+                                        <p className="mt-4 leading-relaxed text-muted">{job.description}</p>
+
+                                        <ul className="mt-5 flex flex-wrap gap-2">
+                                            {job.tags.map((tag) => (
+                                                <li key={tag} className="rounded-md border border-line bg-panel px-2.5 py-1 font-mono text-xs text-fg">
+                                                    <span className="text-dim">#</span>
+                                                    {tag.toLowerCase().replace(/[\s.]+/g, "_")}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </article>
+                                </Reveal>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </Reveal>
         </section>
     );
 }
