@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import Button from "./Button";
+import { WindowBar } from "./Reveal";
 
-const roles = ["Python Developer", "AI / ML Engineer", "Full-Stack MERN Developer", "Problem Solver"];
-const name = "Victoire Ansima";
+const roles = ["Python Developer", "AI / ML Engineer", "Full-Stack Developer", "Problem Solver"];
 
 /** Types each role out, pauses, deletes it, then moves on to the next. */
 function useTypewriter(words: string[]) {
@@ -30,140 +30,192 @@ function useTypewriter(words: string[]) {
     return text;
 }
 
-function LandingTxt() {
-    const ref = useRef<HTMLElement>(null);
-    const role = useTypewriter(roles);
+/* ---------- tiny syntax-highlight helpers ---------- */
+const K = ({ children }: { children: ReactNode }) => <span className="text-syn-kw">{children}</span>;
+const S = ({ children }: { children: ReactNode }) => <span className="text-syn-str">{children}</span>;
+const F = ({ children }: { children: ReactNode }) => <span className="text-syn-fn">{children}</span>;
+const C = ({ children }: { children: ReactNode }) => <span className="text-dim italic">{children}</span>;
+const Y = ({ children }: { children: ReactNode }) => <span className="text-py-yellow">{children}</span>;
 
-    // Blobs drift toward the cursor for a subtle parallax feel
-    const mx = useMotionValue(0);
-    const my = useMotionValue(0);
-    const sx = useSpring(mx, { stiffness: 40, damping: 20 });
-    const sy = useSpring(my, { stiffness: 40, damping: 20 });
-    const invX = useTransform(sx, (v) => -v);
-    const invY = useTransform(sy, (v) => -v);
+const codeLines: ReactNode[] = [
+    <><K>from</K> ai <K>import</K> Model, curiosity</>,
+    <></>,
+    <><K>class</K> <Y>Victoire</Y>(Developer):</>,
+    <>    <C>"""Python &amp; AI / ML developer."""</C></>,
+    <></>,
+    <>    <K>def</K> <F>__init__</F>(self):</>,
+    <>        self.company = <S>"AmaliTech"</S></>,
+    <>        self.stack = [<S>"Python"</S>, <S>"PyTorch"</S>, <S>"React"</S>]</>,
+    <>        self.focus = <S>"machine learning"</S></>,
+    <></>,
+    <>    <K>def</K> <F>build</F>(self, idea: str) -&gt; Product:</>,
+    <>        model = Model.<F>train</F>(idea, data=curiosity)</>,
+    <>        <K>return</K> model.<F>deploy</F>()</>,
+];
 
-    // Content lifts and fades as the hero scrolls away
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const contentY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-    const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+function CodeWindow() {
+    return (
+        <div className="overflow-hidden rounded-xl border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(0,0,0,0.7)]">
+            <WindowBar title="victoire.py" right="Python 3.12" />
+            <pre className="overflow-x-auto py-4 font-mono text-[12.5px] leading-6 sm:text-[13.5px]">
+                {codeLines.map((line, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + i * 0.06, duration: 0.3 }}
+                        className="flex hover:bg-panel-2"
+                    >
+                        <span className="w-10 shrink-0 pr-4 text-right text-dim select-none">{i + 1}</span>
+                        <code className="pr-4 whitespace-pre text-fg">{line}</code>
+                    </motion.div>
+                ))}
+            </pre>
+        </div>
+    );
+}
 
-    function handleMove(e: MouseEvent) {
-        mx.set((e.clientX / window.innerWidth - 0.5) * 80);
-        my.set((e.clientY / window.innerHeight - 0.5) * 80);
-    }
+const EPOCHS = 5;
+
+/** A fake training run that loops forever: epochs tick by, loss drops, accuracy climbs. */
+function TrainingTerminal() {
+    const [epoch, setEpoch] = useState(0);
+
+    useEffect(() => {
+        const id = setTimeout(() => setEpoch((e) => (e > EPOCHS + 3 ? 0 : e + 1)), epoch === 0 ? 1800 : 900);
+        return () => clearTimeout(id);
+    }, [epoch]);
+
+    const shown = Math.min(epoch, EPOCHS);
+    const done = epoch > EPOCHS;
 
     return (
-        <section
-            ref={ref}
-            id="home"
-            onMouseMove={handleMove}
-            className="bg-grid relative grid h-svh min-h-150 place-content-center overflow-hidden px-5 text-center"
-        >
-            {/* Animated aurora blobs */}
-            <motion.div aria-hidden="true" style={{ x: sx, y: sy }} className="pointer-events-none absolute -top-32 -left-32">
-                <div className="h-112 w-112 animate-blob rounded-full bg-teal-500/30 blur-[100px]" />
-            </motion.div>
-            <motion.div aria-hidden="true" style={{ x: invX, y: invY }} className="pointer-events-none absolute -right-24 bottom-0">
-                <div className="h-104 w-104 animate-blob rounded-full bg-amber-300/20 blur-[100px] [animation-delay:-6s]" />
-            </motion.div>
-            <motion.div aria-hidden="true" style={{ x: sy, y: invX }} className="pointer-events-none absolute top-1/3 left-1/2">
-                <div className="h-80 w-80 animate-blob rounded-full bg-violet-500/20 blur-[100px] [animation-delay:-12s]" />
-            </motion.div>
-
-            {/* Spinning amber rings, a nod to the original amber shapes */}
-            <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 animate-spin-slow rounded-[40%] border border-amber-200/20" />
-            <div aria-hidden="true" className="pointer-events-none absolute -bottom-28 -left-20 h-64 w-64 animate-spin-slow rounded-[35%] border border-teal-300/20 [animation-direction:reverse]" />
-
-            <motion.div style={{ y: contentY, opacity: contentOpacity }} className="relative z-10">
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                    className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-1.5 text-sm text-teal-200"
-                >
-                    <span className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-300 opacity-75" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-300" />
-                    </span>
-                    Currently building at <span className="font-semibold text-amber-200">AmaliTech</span>
-                </motion.p>
-
-                <motion.h1
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="font-display text-2xl font-medium text-teal-100 sm:text-3xl"
-                >
-                    Hello{" "}
-                    <motion.span
-                        className="inline-block origin-[70%_70%]"
-                        animate={{ rotate: [0, 18, -8, 18, -4, 10, 0] }}
-                        transition={{ delay: 1, duration: 1.6, repeat: Infinity, repeatDelay: 3 }}
-                    >
-                        👋
-                    </motion.span>
-                    , I am
-                </motion.h1>
-
-                <h2 aria-label={name} className="mt-3 font-display text-5xl leading-tight font-bold sm:text-8xl">
-                    {/* Letters animate one by one, grouped per word so lines only break between words */}
-                    {name.split(" ").map((word, w, words) => {
-                        const offset = words.slice(0, w).join(" ").length + (w ? 1 : 0);
-                        return (
-                            <span key={w} aria-hidden="true" className="inline-block whitespace-nowrap">
-                                {word.split("").map((char, i) => (
-                                    <motion.span
-                                        key={i}
-                                        initial={{ opacity: 0, y: 60, rotateX: -90 }}
-                                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                                        transition={{ delay: 0.6 + (offset + i) * 0.04, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                        className="text-shimmer inline-block"
-                                    >
-                                        {char}
-                                    </motion.span>
-                                ))}
-                                {w < words.length - 1 && " "}
+        <div className="overflow-hidden rounded-xl border border-line bg-ink font-mono text-[12px] sm:text-[12.5px]">
+            <WindowBar title="terminal — zsh" />
+            <div className="min-h-44 space-y-1 p-4 leading-5">
+                <p>
+                    <span className="text-syn-ok">➜</span> <span className="text-py-blue">~/portfolio</span>{" "}
+                    <span className="text-fg">python train.py</span>
+                </p>
+                {Array.from({ length: shown }, (_, i) => {
+                    const n = i + 1;
+                    const loss = (0.92 * Math.pow(0.55, i)).toFixed(3);
+                    const acc = (0.71 + i * 0.065).toFixed(3);
+                    return (
+                        <p key={n} className="flex flex-wrap gap-x-3 text-muted">
+                            <span>
+                                epoch <span className="text-fg">{n}/{EPOCHS}</span>
                             </span>
-                        );
-                    })}
-                </h2>
+                            <span aria-hidden="true" className="text-py-yellow">
+                                {"█".repeat(n * 2)}
+                                <span className="text-line">{"█".repeat((EPOCHS - n) * 2)}</span>
+                            </span>
+                            <span>
+                                loss <span className="text-syn-num">{loss}</span>
+                            </span>
+                            <span>
+                                acc <span className="text-syn-ok">{acc}</span>
+                            </span>
+                        </p>
+                    );
+                })}
+                {done ? (
+                    <p className="text-syn-ok">✓ model ready · shipping to production</p>
+                ) : (
+                    <span className="inline-block h-4 w-2 animate-blink bg-fg align-middle" />
+                )}
+            </div>
+        </div>
+    );
+}
 
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.4 }}
-                    className="mt-6 h-16 font-display text-xl sm:h-9 text-teal-50 sm:text-3xl"
-                >
-                    I am a <span className="font-semibold text-amber-200">{role}</span>
-                    <span className="ml-0.5 inline-block w-[2px] animate-pulse bg-amber-200 align-middle">&nbsp;</span>
-                </motion.p>
+function LandingTxt() {
+    const role = useTypewriter(roles);
+
+    return (
+        <section id="home" className="bg-dots relative overflow-hidden px-5 pt-28 pb-20 lg:min-h-svh lg:pt-32">
+            <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
+                <div>
+                    <motion.p
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1, duration: 0.5 }}
+                        className="mb-8 inline-flex items-center gap-2 rounded-md border border-line bg-panel px-3 py-1.5 font-mono text-xs text-muted"
+                    >
+                        <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-syn-ok opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-syn-ok" />
+                        </span>
+                        currently building @ <span className="font-bold text-py-yellow">AmaliTech</span>
+                    </motion.p>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.25 }}
+                        className="font-mono text-base text-muted sm:text-lg"
+                    >
+                        <span className="text-py-blue">&gt;&gt;&gt;</span> <F>print</F>(<S>"Hello, world 👋"</S>)
+                    </motion.p>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="mt-4 font-display text-5xl leading-[1.05] font-bold text-fg sm:text-7xl xl:text-8xl"
+                    >
+                        Victoire
+                        <br />
+                        <span className="text-py-blue">Ansima</span>
+                        <span className="text-py-yellow">_</span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.7 }}
+                        className="mt-7 h-8 font-mono text-lg sm:text-2xl"
+                        aria-live="polite"
+                    >
+                        <span className="text-fg">role</span> <span className="text-muted">=</span>{" "}
+                        <span className="text-syn-str">"{role}</span>
+                        <span className="ml-0.5 inline-block h-[1.1em] w-2.5 animate-blink bg-py-yellow align-middle" />
+                        <span className="text-syn-str">"</span>
+                    </motion.p>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.85 }}
+                        className="mt-6 max-w-xl text-lg leading-relaxed text-muted"
+                    >
+                        I build intelligent, data-driven products with <span className="text-fg">Python</span> and{" "}
+                        <span className="text-fg">machine learning</span>, then ship them end-to-end on the web.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.5 }}
+                        className="mt-10 flex flex-wrap items-center gap-4"
+                    >
+                        <Button txt="view_projects()" href="#projects" variant="solid" />
+                        <Button txt="cat about.md" href="#about" />
+                    </motion.div>
+                </div>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.7, duration: 0.6 }}
-                    className="mt-10 flex flex-wrap items-center justify-center gap-4"
+                    transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative grid gap-5"
                 >
-                    <Button txt="View my work" href="#projects" variant="solid" />
-                    <Button txt="About me" href="#about" />
+                    <CodeWindow />
+                    <div className="lg:-mt-2 lg:ml-12">
+                        <TrainingTerminal />
+                    </div>
                 </motion.div>
-            </motion.div>
-
-            {/* Scroll cue */}
-            <motion.a
-                href="#about"
-                aria-label="Scroll to about section"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.2 }}
-                className="absolute bottom-8 left-1/2 flex h-12 w-7 -translate-x-1/2 justify-center rounded-full border-2 border-teal-200/40 pt-2"
-            >
-                <motion.span
-                    animate={{ y: [0, 14, 0], opacity: [1, 0.2, 1] }}
-                    transition={{ duration: 1.8, repeat: Infinity }}
-                    className="h-2 w-1 rounded-full bg-amber-200"
-                />
-            </motion.a>
+            </div>
         </section>
     );
 }
