@@ -1,70 +1,73 @@
 import { motion } from "framer-motion";
-import dockerImg from "../assets/languages/docker.png";
-import htmlImg from "../assets/languages/html_logo-removebg-preview 1.png";
-import cssImg from "../assets/languages/css.png";
-import reactImg from "../assets/languages/react.png";
-import mongoDbImg from "../assets/languages/mongoDb.png";
-import typeScriptImg from "../assets/languages/typescript.png";
-import javaScriptImg from "../assets/languages/Javascript 1.png";
-import nodeImg from "../assets/languages/node.png";
-import gitImg from "../assets/languages/git.png";
+import Reveal, { WindowBar } from "./Reveal";
 
-const skills = [
-    { img: htmlImg, name: "HTML" },
-    { img: cssImg, name: "CSS" },
-    { img: javaScriptImg, name: "JavaScript" },
-    { img: typeScriptImg, name: "TypeScript" },
-    { img: reactImg, name: "React" },
-    { img: nodeImg, name: "Node.js" },
-    { img: mongoDbImg, name: "MongoDB" },
-    { img: dockerImg, name: "Docker" },
-    { img: gitImg, name: "Git" },
+/** The toolbox, rendered as a Python dict. Edit these lists to update the site. */
+const stack: { key: string; accent: string; items: string[] }[] = [
+    { key: "ai_ml", accent: "border-py-yellow text-py-yellow", items: ["Python", "PyTorch", "Machine Learning", "Data"] },
+    { key: "backend", accent: "border-py-blue text-py-blue", items: ["Node.js", "Express", "MongoDB"] },
+    { key: "frontend", accent: "border-syn-fn text-syn-fn", items: ["React", "TypeScript", "JavaScript", "HTML", "CSS", "Figma"] },
+    { key: "tooling", accent: "border-syn-ok text-syn-ok", items: ["Docker", "Git"] },
 ];
 
-const container = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.07 } },
-};
+const all = stack.flatMap((g) => g.items);
+
+const container = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const item = {
-    hidden: { opacity: 0, y: 30, scale: 0.8 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 220, damping: 18 } },
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
 function LanguageGrid() {
     return (
         <>
-            <motion.ul
-                variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.2 }}
-                className="grid grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-9"
-            >
-                {skills.map(({ img, name }) => (
-                    <motion.li
-                        key={name}
-                        variants={item}
-                        whileHover={{ y: -10, rotate: -3 }}
-                        className="group relative flex flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur transition-[border-color,box-shadow] duration-300 hover:border-amber-200/50 hover:shadow-[0_10px_40px_-10px_rgba(253,230,138,0.45)]"
-                    >
-                        <div className="grid h-16 w-16 place-content-center rounded-xl bg-white p-2 transition-transform duration-500 group-hover:rotate-360">
-                            <img src={img} alt="" className="h-12 w-12 object-contain" />
-                        </div>
-                        <span className="text-sm font-medium text-teal-50">{name}</span>
-                    </motion.li>
-                ))}
-            </motion.ul>
+            <Reveal>
+                <div className="overflow-hidden rounded-xl border border-line bg-panel">
+                    <WindowBar title="toolbox.py" right={`len(stack) == ${all.length}`} />
+                    <div className="overflow-x-auto p-5 font-mono text-sm sm:p-7 sm:text-[15px]">
+                        <p className="text-fg">
+                            stack <span className="text-muted">=</span> {"{"}
+                        </p>
+                        <ul className="my-2 grid gap-4 pl-5 sm:pl-8">
+                            {stack.map((group) => (
+                                <li key={group.key} className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4">
+                                    <span className="shrink-0 lg:w-32">
+                                        <span className="text-syn-str">"{group.key}"</span>
+                                        <span className="text-muted">:</span>
+                                    </span>
+                                    <motion.ul
+                                        variants={container}
+                                        initial="hidden"
+                                        whileInView="show"
+                                        viewport={{ once: true, amount: 0.5 }}
+                                        className="flex flex-wrap items-center gap-2"
+                                    >
+                                        <span className="text-muted">[</span>
+                                        {group.items.map((name) => (
+                                            <motion.li
+                                                key={name}
+                                                variants={item}
+                                                className={`rounded-md border bg-ink px-2.5 py-1 text-xs transition-colors hover:bg-panel-2 sm:text-sm ${group.accent}`}
+                                            >
+                                                {name}
+                                            </motion.li>
+                                        ))}
+                                        <span className="text-muted">],</span>
+                                    </motion.ul>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="text-fg">{"}"}</p>
+                    </div>
+                </div>
+            </Reveal>
 
             {/* Endless marquee of tech names */}
-            <div
-                aria-hidden="true"
-                className="relative mt-16 overflow-hidden py-4 mask-[linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]"
-            >
-                <div className="flex w-max animate-marquee font-display text-3xl font-bold text-white/10 sm:text-5xl">
-                    {[...skills, ...skills].map(({ name }, i) => (
-                        <span key={i} className="flex items-center gap-12 pr-12">
+            <div aria-hidden="true" className="relative mt-14 overflow-hidden border-y border-line py-4">
+                <div className="flex w-max animate-marquee font-mono text-2xl font-bold text-line sm:text-4xl">
+                    {[...all, ...all].map((name, i) => (
+                        <span key={i} className="flex items-center gap-10 pr-10">
                             {name}
-                            <span className="text-amber-200/30">✦</span>
+                            <span className="text-py-blue/40">/</span>
                         </span>
                     ))}
                 </div>
